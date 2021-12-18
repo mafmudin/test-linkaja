@@ -1,0 +1,2 @@
+rootProject.name = "Test LinkAja"
+include ':app'
