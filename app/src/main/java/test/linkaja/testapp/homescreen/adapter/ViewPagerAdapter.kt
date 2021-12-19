@@ -9,6 +9,7 @@ import test.linkaja.testapp.homescreen.model.movie.Movie
 import android.view.LayoutInflater
 
 import android.widget.ImageView
+import android.widget.TextView
 import com.squareup.picasso.Picasso
 import test.linkaja.testapp.BuildConfig
 import test.linkaja.testapp.R
@@ -37,6 +38,13 @@ class ViewPagerAdapter(private val context: Context): PagerAdapter() {
             context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = mLayoutInflater.inflate(R.layout.image_slider_item, container, false)
         val imageView = view.findViewById<ImageView>(R.id.imageViewSlider)
+        val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
+        val tvOverview = view.findViewById<TextView>(R.id.tvOverview)
+        val tvRate = view.findViewById<TextView>(R.id.tvRate)
+
+        tvTitle.text = movie.title
+        tvOverview.text = movie.overview
+        tvRate.text = String.format("%s (%s)", movie.vote_average, movie.vote_count)
 
         Picasso.get()
             .load(BuildConfig.IMAGE_BASE_URL.plus(movie.backdrop_path))
