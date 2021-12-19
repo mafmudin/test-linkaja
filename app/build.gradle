@@ -30,6 +30,7 @@ android {
         buildConfigField("String", "BASE_URL", apikeyProperties['BASE_URL'])
         buildConfigField("String", "IMAGE_BASE_URL", apikeyProperties['IMAGE_BASE_URL'])
         buildConfigField("String", "SESSION_ID", apikeyProperties['SESSION_ID'])
+        buildConfigField("String", "ACCOUNT_ID", apikeyProperties['ACCOUNT_ID'])
     }
 
     buildTypes {

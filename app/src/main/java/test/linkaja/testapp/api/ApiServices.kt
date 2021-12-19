@@ -53,4 +53,11 @@ interface ApiServices {
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Response<MovieDetailResponse>
+
+    @GET("account/{account_id}/favorite/movies")
+    suspend fun getFavourite(
+        @Path(value = "account_id", encoded = true) accountId: String,
+        @Query("api_key") apiKey: String,
+        @Query("session_id") session: String
+    ): Response<MovieResponse>
 }

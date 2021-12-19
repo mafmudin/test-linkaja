@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import test.linkaja.testapp.BuildConfig
 import test.linkaja.testapp.api.ApiServices
 import test.linkaja.testapp.detailmovie.repository.DetailMovieRepository
+import test.linkaja.testapp.favourite.repository.FavoriteRepository
 import test.linkaja.testapp.homescreen.repository.GenreRepository
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -55,4 +56,8 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun getDetailMovieRepository(apiServices: ApiServices): DetailMovieRepository = DetailMovieRepository(apiServices)
+
+    @Singleton
+    @Provides
+    fun getFavouriteRepository(apiServices: ApiServices): FavoriteRepository = FavoriteRepository(apiServices)
 }

@@ -40,6 +40,10 @@ class MovieDetailActivity : BaseActivity() {
             }
         })
 
+        buttonBack.setOnClickListener {
+            finish()
+        }
+
         lifecycleScope.launchWhenCreated {
             movieDetailViewModel.conversion.collect {
                 when(it){

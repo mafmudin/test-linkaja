@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
+    android:id="@+id/cardView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -10,6 +11,7 @@
     app:cardCornerRadius="3dp">
 
     <LinearLayout
+        android:id="@+id/llGenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp">
@@ -17,6 +19,7 @@
             android:id="@+id/tvGenre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             tools:text="Genre"/>
 
     </LinearLayout>

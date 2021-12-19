@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import test.linkaja.testapp.R
 import test.linkaja.testapp.base.BaseActivity
 import test.linkaja.testapp.detailmovie.MovieDetailActivity
+import test.linkaja.testapp.favourite.FavouriteActivity
 import test.linkaja.testapp.homescreen.adapter.GenreAdapter
 import test.linkaja.testapp.homescreen.adapter.MovieAdapter
 import test.linkaja.testapp.homescreen.adapter.ViewPagerAdapter
@@ -134,6 +135,11 @@ class HomeScreenActivity : BaseActivity() {
                 buttonFavorite.visibility = View.VISIBLE
                 viewPager.visibility = View.VISIBLE
             }
+        }
+
+        buttonFavorite.setOnClickListener {
+            val intent = Intent(this@HomeScreenActivity, FavouriteActivity::class.java)
+            startActivity(intent)
         }
 
         etSearch.addTextChangedListener(object : TextWatcher{
