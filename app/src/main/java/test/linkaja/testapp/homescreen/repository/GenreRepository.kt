@@ -101,4 +101,24 @@ class GenreRepository @Inject constructor(
         }
 
     }
+
+    suspend fun searchMovie(query: String, page: Int): Resource<MovieResponse> {
+        return try {
+            val response = apiServices.searchMovie(
+                query,
+                page,
+                BuildConfig.API_KEY
+            )
+
+            val result = response.body()
+            if (response.isSuccessful && result != null) {
+                Resource.Success(result)
+            } else {
+                Resource.Error("An Error occurred")
+            }
+        } catch (e: Exception) {
+            Resource.Error("An $e occurred")
+        }
+
+    }
 }

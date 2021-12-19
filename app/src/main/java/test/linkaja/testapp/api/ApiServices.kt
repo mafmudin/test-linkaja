@@ -38,4 +38,11 @@ interface ApiServices {
         @Query("certification") certification: String,
         @Query("api_key") apiKey: String
     ): Response<MovieResponse>
+
+    @GET("search/movie")
+    suspend fun searchMovie(
+        @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("api_key") apiKey: String
+    ): Response<MovieResponse>
 }

@@ -2,6 +2,8 @@ package test.linkaja.testapp.homescreen
 
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -101,6 +103,7 @@ class HomeScreenActivity : BaseActivity() {
             if (llSearchName.visibility == View.GONE){
                 llSearchName.startAnimation(slideLeft)
                 llSearchName.visibility = View.VISIBLE
+                viewPager.visibility = View.GONE
             }
         }
 
@@ -112,8 +115,24 @@ class HomeScreenActivity : BaseActivity() {
             if (buttonFavorite.visibility == View.GONE){
                 buttonFavorite.startAnimation(slideRight)
                 buttonFavorite.visibility = View.VISIBLE
+                viewPager.visibility = View.VISIBLE
             }
         }
+
+        etSearch.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                page = 1
+                genreViewModel.searchMovie(s.toString(), page)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
 
         genreViewModel.getGenres()
         genreViewModel.getMovie(page)
@@ -186,6 +205,26 @@ class HomeScreenActivity : BaseActivity() {
                     }
                     is GenresViewModel.MovieEvent.Loading -> {
                         progressSvg.show()
+                    }
+
+                    else -> Unit
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            genreViewModel.conversionSearch.collect{
+                when(it){
+                    is GenresViewModel.SearchEvent.Success -> {
+//                        progressSvg.dissmis()
+                        Log.e("RESULT SEARCH", it.movieItem.toString())
+                        movieAdapter.updateList(it.movieItem)
+                    }
+                    is GenresViewModel.SearchEvent.Error -> {
+//                        progressSvg.dissmis()
+                    }
+                    is GenresViewModel.SearchEvent.Loading -> {
+//                        progressSvg.show()
                     }
 
                     else -> Unit
