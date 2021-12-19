@@ -5,22 +5,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".homescreen.HomeScreenActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="300dp">
 
         <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="300dp"/>
 
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="40dp"
             android:layout_gravity="bottom"
             app:tabBackground="@drawable/indicator_selector"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGenre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:listitem="@layout/rv_item_genre"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMovie"
+            app:spanCount="2"
+            android:layout_gravity="center_horizontal"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/rv_item_movie"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
+
 
 </LinearLayout>
