@@ -1,10 +1,9 @@
 package test.linkaja.testapp.api
 
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 import test.linkaja.testapp.detailmovie.model.MovieDetailResponse
+import test.linkaja.testapp.favourite.model.SetFavouriteResponse
 import test.linkaja.testapp.homescreen.model.genres.Genre
 import test.linkaja.testapp.homescreen.model.genres.GenresResponse
 import test.linkaja.testapp.homescreen.model.movie.MovieResponse
@@ -60,4 +59,15 @@ interface ApiServices {
         @Query("api_key") apiKey: String,
         @Query("session_id") session: String
     ): Response<MovieResponse>
+
+    @FormUrlEncoded
+    @POST("account/{account_id}/favorite")
+    suspend fun setFavourite(
+        @Path(value = "account_id", encoded = true) accountId: String,
+        @Query("api_key") apiKey: String,
+        @Query("session_id") session: String,
+        @Field("media_type") mediaType: String,
+        @Field("media_id") mediaId: Int,
+        @Field("favorite") favorite: Boolean
+    ): Response<SetFavouriteResponse>
 }
