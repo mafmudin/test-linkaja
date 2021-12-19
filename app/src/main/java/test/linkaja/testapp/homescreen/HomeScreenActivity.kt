@@ -3,6 +3,8 @@ package test.linkaja.testapp.homescreen
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
@@ -91,6 +93,27 @@ class HomeScreenActivity : BaseActivity() {
                 handler.post(runnable)
             }
         }, 500, 5000)
+
+        buttonSearch.setOnClickListener {
+            buttonFavorite.visibility = View.GONE
+            val slideLeft = AnimationUtils.loadAnimation(this, R.anim.slide_left)
+
+            if (llSearchName.visibility == View.GONE){
+                llSearchName.startAnimation(slideLeft)
+                llSearchName.visibility = View.VISIBLE
+            }
+        }
+
+        buttonCloseSearch.setOnClickListener {
+            etSearch.setText("")
+            val slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_right)
+            llSearchName.visibility = View.GONE
+
+            if (buttonFavorite.visibility == View.GONE){
+                buttonFavorite.startAnimation(slideRight)
+                buttonFavorite.visibility = View.VISIBLE
+            }
+        }
 
         genreViewModel.getGenres()
         genreViewModel.getMovie(page)

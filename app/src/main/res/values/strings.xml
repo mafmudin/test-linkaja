@@ -2,4 +2,5 @@
     <string name="app_name">Test LinkAja</string>
     <string name="smart_movie">Smart Movie</string>
     <string name="image">image</string>
+    <string name="search">Cari</string>
 </resources>
