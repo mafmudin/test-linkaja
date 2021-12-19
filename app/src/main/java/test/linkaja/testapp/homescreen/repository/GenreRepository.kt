@@ -81,4 +81,24 @@ class GenreRepository @Inject constructor(
         }
 
     }
+
+    suspend fun getHighestRateMovie(): Resource<MovieResponse> {
+        return try {
+            val response = apiServices.getHighestRateMovie(
+                "vote_average.desc",
+                "R",
+                BuildConfig.API_KEY
+            )
+
+            val result = response.body()
+            if (response.isSuccessful && result != null) {
+                Resource.Success(result)
+            } else {
+                Resource.Error("An Error occurred")
+            }
+        } catch (e: Exception) {
+            Resource.Error("An $e occurred")
+        }
+
+    }
 }

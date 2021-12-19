@@ -31,4 +31,11 @@ interface ApiServices {
         @Query("language") language: String,
         @Query("page") page: Int
     ): Response<MovieResponse>
+
+    @GET("discover/movie")
+    suspend fun getHighestRateMovie(
+        @Query("sort_by") shortBy: String,
+        @Query("certification") certification: String,
+        @Query("api_key") apiKey: String
+    ): Response<MovieResponse>
 }

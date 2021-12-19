@@ -38,6 +38,13 @@ class GenresViewModel @Inject constructor(private val genreRepository: GenreRepo
         object Empty: PopularMovieEvent()
     }
 
+    sealed class HighestRateMovieEvent{
+        class Success(val movieItem: List<Movie>): HighestRateMovieEvent()
+        class Error(val errorMessage: String): HighestRateMovieEvent()
+        object Loading: HighestRateMovieEvent()
+        object Empty: HighestRateMovieEvent()
+    }
+
     private val _conversion = MutableStateFlow<GenreEvent>(GenreEvent.Empty)
     val conversion : StateFlow<GenreEvent> = _conversion
 
@@ -80,6 +87,22 @@ class GenresViewModel @Inject constructor(private val genreRepository: GenreRepo
                 is Resource.Success -> {
                     Log.e("VIEW MODEL RESULT ", response.data.toString())
                     _conversionPopularMovie.value = PopularMovieEvent.Success(response.data!!.movies)
+                }
+            }
+        }
+    }
+
+    private val _conversionHighestRateMovie = MutableStateFlow<HighestRateMovieEvent>(HighestRateMovieEvent.Empty)
+    val conversionHighestMovie : StateFlow<HighestRateMovieEvent> = _conversionHighestRateMovie
+
+    fun getHighestRateMovie(){
+        viewModelScope.launch(Dispatchers.IO){
+            _conversionHighestRateMovie.value = HighestRateMovieEvent.Loading
+            when(val response = genreRepository.getHighestRateMovie()){
+                is Resource.Error -> _conversionHighestRateMovie.value = HighestRateMovieEvent.Error(response.message!!)
+                is Resource.Success -> {
+                    Log.e("VIEW MODEL RESULT ", response.data.toString())
+                    _conversionHighestRateMovie.value = HighestRateMovieEvent.Success(response.data!!.movies)
                 }
             }
         }

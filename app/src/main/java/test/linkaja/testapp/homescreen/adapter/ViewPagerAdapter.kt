@@ -12,13 +12,15 @@ import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import test.linkaja.testapp.BuildConfig
 import test.linkaja.testapp.R
+import java.util.*
 
 
 class ViewPagerAdapter(private val context: Context): PagerAdapter() {
-    private var list = arrayListOf<Movie>()
+    private var list: List<Movie> = arrayListOf()
 
-    fun updateList(list: ArrayList<Movie>){
+    fun updateList(list: List<Movie>){
         this.list = list
+        notifyDataSetChanged()
     }
 
     override fun getCount(): Int {
@@ -38,12 +40,15 @@ class ViewPagerAdapter(private val context: Context): PagerAdapter() {
 
         Picasso.get()
             .load(BuildConfig.IMAGE_BASE_URL.plus(movie.backdrop_path))
+            .placeholder(R.drawable.movie)
             .into(imageView)
+
+        Objects.requireNonNull(container).addView(view)
 
         return view
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as LinearLayout)
+    override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
+        container.removeView(obj as LinearLayout)
     }
 }
