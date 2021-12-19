@@ -43,6 +43,10 @@ class MovieAdapter(val listener: MovieListener) : RecyclerView.Adapter<MovieAdap
                     .load(BuildConfig.IMAGE_BASE_URL.plus(item.poster_path))
                     .placeholder(R.drawable.movie)
                     .into(ivMovie)
+
+                itemView.setOnClickListener {
+                    listener.onClick(item, pos)
+                }
             }
         }
 
@@ -58,7 +62,7 @@ class MovieAdapter(val listener: MovieListener) : RecyclerView.Adapter<MovieAdap
     }
 
     interface MovieListener{
-        fun onClick(genre:Movie, pos:Int)
+        fun onClick(movie:Movie, pos:Int)
     }
 
 }

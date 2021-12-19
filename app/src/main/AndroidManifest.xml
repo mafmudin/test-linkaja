@@ -17,6 +17,12 @@
             android:exported="true"
             android:theme="@style/FullScreen">
         </activity>
+
+        <activity
+            android:name=".detailmovie.MovieDetailActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen">
+        </activity>
         <activity
             android:name=".splashscreen.SplashScreenActivity"
             android:exported="true"

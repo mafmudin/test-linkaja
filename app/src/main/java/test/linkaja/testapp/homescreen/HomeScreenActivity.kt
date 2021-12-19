@@ -1,5 +1,6 @@
 package test.linkaja.testapp.homescreen
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import test.linkaja.testapp.R
 import test.linkaja.testapp.base.BaseActivity
+import test.linkaja.testapp.detailmovie.MovieDetailActivity
 import test.linkaja.testapp.homescreen.adapter.GenreAdapter
 import test.linkaja.testapp.homescreen.adapter.MovieAdapter
 import test.linkaja.testapp.homescreen.adapter.ViewPagerAdapter
@@ -55,8 +57,10 @@ class HomeScreenActivity : BaseActivity() {
         })
 
         movieAdapter = MovieAdapter(object : MovieAdapter.MovieListener{
-            override fun onClick(genre: Movie, pos: Int) {
-
+            override fun onClick(movie: Movie, pos: Int) {
+                val intent = Intent(this@HomeScreenActivity, MovieDetailActivity::class.java)
+                intent.putExtra("id", movie.id.toString())
+                startActivity(intent)
             }
         })
 

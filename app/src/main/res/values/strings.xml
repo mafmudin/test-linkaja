@@ -3,4 +3,6 @@
     <string name="smart_movie">Smart Movie</string>
     <string name="image">image</string>
     <string name="search">Cari</string>
+    <string name="play_trailer">Play Trailer</string>
+    <string name="overview">Overview</string>
 </resources>

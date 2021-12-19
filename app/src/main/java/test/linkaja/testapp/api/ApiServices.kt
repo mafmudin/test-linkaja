@@ -4,6 +4,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import test.linkaja.testapp.detailmovie.model.MovieDetailResponse
 import test.linkaja.testapp.homescreen.model.genres.Genre
 import test.linkaja.testapp.homescreen.model.genres.GenresResponse
 import test.linkaja.testapp.homescreen.model.movie.MovieResponse
@@ -45,4 +46,11 @@ interface ApiServices {
         @Query("page") page: Int,
         @Query("api_key") apiKey: String
     ): Response<MovieResponse>
+
+    @GET("movie/{movie_id}")
+    suspend fun detailMovie(
+        @Path(value = "movie_id", encoded = true) movieId: String,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): Response<MovieDetailResponse>
 }
