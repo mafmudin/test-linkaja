@@ -4,19 +4,25 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import test.linkaja.testapp.BuildConfig
 import test.linkaja.testapp.api.ApiServices
-import test.linkaja.testapp.splashscreen.repository.RequestTokenRepository
+import test.linkaja.testapp.homescreen.repository.GenreRepository
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
+
+    @Singleton
+    @Provides
+    fun provideApplicationScope() = CoroutineScope(SupervisorJob())
 
     @Singleton
     @Provides
@@ -43,5 +49,6 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideRequestTokenRepository(apiServices: ApiServices): RequestTokenRepository = RequestTokenRepository(apiServices)
+    fun provideGenresRepository(apiServices: ApiServices): GenreRepository = GenreRepository(apiServices)
+
 }

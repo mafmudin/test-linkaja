@@ -14,13 +14,8 @@
         android:theme="@style/Theme.TestLinkAja">
         <activity
             android:name=".homescreen.HomeScreenActivity"
-            android:exported="true" >
-            <intent-filter>
-                <data android:scheme="myapp" android:host="testlinkaja"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+            android:exported="true"
+            android:theme="@style/FullScreen">
         </activity>
         <activity
             android:name=".splashscreen.SplashScreenActivity"

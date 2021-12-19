@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
+kapt { generateStubs = true }
 
 def apikeyPropertiesFile = rootProject.file("secret.properties")
 def apikeyProperties = new Properties()
@@ -13,6 +14,9 @@ apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 android {
     compileSdk 31
 
+    buildFeatures {
+        dataBinding true
+    }
     defaultConfig {
         applicationId "test.linkaja.testapp"
         minSdk 21
@@ -24,6 +28,8 @@ android {
         buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
         buildConfigField("String", "API_KEY_V4", apikeyProperties['API_KEY_V4'])
         buildConfigField("String", "BASE_URL", apikeyProperties['BASE_URL'])
+        buildConfigField("String", "IMAGE_BASE_URL", apikeyProperties['IMAGE_BASE_URL'])
+        buildConfigField("String", "SESSION_ID", apikeyProperties['SESSION_ID'])
     }
 
     buildTypes {
@@ -91,4 +97,6 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     implementation 'com.github.mafmudin:progress-sg:0.0.1'
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
