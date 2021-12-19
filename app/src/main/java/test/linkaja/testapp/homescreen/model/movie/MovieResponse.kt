@@ -6,7 +6,7 @@ import test.linkaja.testapp.homescreen.model.movie.Movie
 data class MovieResponse(
     val page: Int,
     @SerializedName("results")
-    val movies: List<Movie>,
+    val movies: MutableList<Movie>,
     val total_pages: Int,
     val total_results: Int
 )

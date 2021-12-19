@@ -13,11 +13,16 @@ import test.linkaja.testapp.homescreen.model.movielist.MovieItem
 
 class MovieAdapter(val listener: MovieListener) : RecyclerView.Adapter<MovieAdapter.BaseViewHolder<*>>(){
 
-    var list : List<Movie> = arrayListOf()
+    var list : MutableList<Movie> = arrayListOf()
 
-    fun updateList(list: List<Movie>){
+    fun updateList(list: MutableList<Movie>){
         this.list = list
         notifyDataSetChanged()
+    }
+
+    fun addList(list: MutableList<Movie>){
+        this.list.addAll(list)
+        notifyItemInserted(this.list.size - 1)
     }
 
     abstract class BaseViewHolder<T> (itemView: View): RecyclerView.ViewHolder(itemView){

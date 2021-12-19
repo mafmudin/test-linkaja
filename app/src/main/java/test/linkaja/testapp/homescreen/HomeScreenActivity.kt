@@ -9,6 +9,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_home_screen.*
@@ -35,6 +36,8 @@ class HomeScreenActivity : BaseActivity() {
 
     var page = 1
     var currentPage = 0
+    var currentQuery = ""
+    var isAdd = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,7 @@ class HomeScreenActivity : BaseActivity() {
         genreAdapter = GenreAdapter(object : GenreAdapter.GenreListener{
             override fun onClick(genre: Genre, pos: Int) {
                 page = 1
+                isAdd = false
                 genreViewModel.getMovieByGenre(genre.id.toString(), page)
             }
         })
@@ -61,6 +65,15 @@ class HomeScreenActivity : BaseActivity() {
         rvGenre.adapter = genreAdapter
         rvMovie.adapter = movieAdapter
         viewPager.adapter = viewPagerAdapter
+
+        tvLoadMore.setOnClickListener {
+            isAdd = true
+            if (llSearchName.visibility == View.VISIBLE){
+                genreViewModel.searchMovie(currentQuery, page++)
+            }else{
+                genreViewModel.getMovie(page++)
+            }
+        }
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrolled(
@@ -125,7 +138,9 @@ class HomeScreenActivity : BaseActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isAdd = false
                 page = 1
+                currentQuery = s.toString()
                 genreViewModel.searchMovie(s.toString(), page)
             }
 
@@ -161,7 +176,11 @@ class HomeScreenActivity : BaseActivity() {
                 when(it){
                     is GenresViewModel.PopularMovieEvent.Success -> {
                         progressSvg.dissmis()
-                        movieAdapter.updateList(it.movieItem)
+                        if (isAdd){
+                            movieAdapter.addList(it.movieItem)
+                        }else{
+                            movieAdapter.updateList(it.movieItem)
+                        }
                     }
                     is GenresViewModel.PopularMovieEvent.Error -> {
                         progressSvg.dissmis()
@@ -218,7 +237,11 @@ class HomeScreenActivity : BaseActivity() {
                     is GenresViewModel.SearchEvent.Success -> {
 //                        progressSvg.dissmis()
                         Log.e("RESULT SEARCH", it.movieItem.toString())
-                        movieAdapter.updateList(it.movieItem)
+                        if (isAdd){
+                            movieAdapter.addList(it.movieItem)
+                        }else{
+                            movieAdapter.updateList(it.movieItem)
+                        }
                     }
                     is GenresViewModel.SearchEvent.Error -> {
 //                        progressSvg.dissmis()

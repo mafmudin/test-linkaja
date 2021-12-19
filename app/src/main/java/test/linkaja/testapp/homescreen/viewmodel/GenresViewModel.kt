@@ -25,28 +25,28 @@ class GenresViewModel @Inject constructor(private val genreRepository: GenreRepo
     }
 
     sealed class MovieEvent{
-        class Success(val movieItem: List<Movie>): MovieEvent()
+        class Success(val movieItem: MutableList<Movie>): MovieEvent()
         class Error(val errorMessage: String): MovieEvent()
         object Loading: MovieEvent()
         object Empty: MovieEvent()
     }
 
     sealed class PopularMovieEvent{
-        class Success(val movieItem: List<Movie>): PopularMovieEvent()
+        class Success(val movieItem: MutableList<Movie>): PopularMovieEvent()
         class Error(val errorMessage: String): PopularMovieEvent()
         object Loading: PopularMovieEvent()
         object Empty: PopularMovieEvent()
     }
 
     sealed class HighestRateMovieEvent{
-        class Success(val movieItem: List<Movie>): HighestRateMovieEvent()
+        class Success(val movieItem: MutableList<Movie>): HighestRateMovieEvent()
         class Error(val errorMessage: String): HighestRateMovieEvent()
         object Loading: HighestRateMovieEvent()
         object Empty: HighestRateMovieEvent()
     }
 
     sealed class SearchEvent{
-        class Success(val movieItem: List<Movie>): SearchEvent()
+        class Success(val movieItem: MutableList<Movie>): SearchEvent()
         class Error(val errorMessage: String): SearchEvent()
         object Loading: SearchEvent()
         object Empty: SearchEvent()
@@ -76,7 +76,7 @@ class GenresViewModel @Inject constructor(private val genreRepository: GenreRepo
             when(val response = genreRepository.getMovieByGenre(id, page)){
                 is Resource.Error -> _conversionMovie.value = MovieEvent.Error(response.message!!)
                 is Resource.Success -> {
-                    Log.e("VIEW MODEL RESULT ", response.data.toString())
+                    Log.e("BY GENRE RESULT ", response.data.toString())
                     _conversionMovie.value = MovieEvent.Success(response.data!!.movies)
                 }
             }
@@ -92,7 +92,7 @@ class GenresViewModel @Inject constructor(private val genreRepository: GenreRepo
             when(val response = genreRepository.getMovie(page)){
                 is Resource.Error -> _conversionPopularMovie.value = PopularMovieEvent.Error(response.message!!)
                 is Resource.Success -> {
-                    Log.e("VIEW MODEL RESULT ", response.data.toString())
+                    Log.e("POPULAR RESULT ", response.data.toString())
                     _conversionPopularMovie.value = PopularMovieEvent.Success(response.data!!.movies)
                 }
             }
@@ -108,7 +108,7 @@ class GenresViewModel @Inject constructor(private val genreRepository: GenreRepo
             when(val response = genreRepository.getHighestRateMovie()){
                 is Resource.Error -> _conversionHighestRateMovie.value = HighestRateMovieEvent.Error(response.message!!)
                 is Resource.Success -> {
-                    Log.e("VIEW MODEL RESULT ", response.data.toString())
+                    Log.e("HIGHEST RESULT ", response.data.toString())
                     _conversionHighestRateMovie.value = HighestRateMovieEvent.Success(response.data!!.movies)
                 }
             }
@@ -124,7 +124,7 @@ class GenresViewModel @Inject constructor(private val genreRepository: GenreRepo
             when(val response = genreRepository.searchMovie(query, page)){
                 is Resource.Error -> _conversionSearch.value = SearchEvent.Error(response.message!!)
                 is Resource.Success -> {
-                    Log.e("VIEW MODEL RESULT ", response.data.toString())
+                    Log.e("SEARCH RESULT ", response.data.toString())
                     _conversionSearch.value = SearchEvent.Success(response.data!!.movies)
                 }
             }

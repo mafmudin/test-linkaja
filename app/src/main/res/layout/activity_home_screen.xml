@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,89 +8,112 @@
     android:orientation="vertical"
     tools:context=".homescreen.HomeScreenActivity">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/clCarousel"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"/>
-
-        <com.google.android.material.tabs.TabLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            app:tabBackground="@drawable/indicator_selector"/>
-
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:gravity="end">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/buttonFavorite"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_favorite"/>
-
-            <ImageView
-                android:id="@+id/buttonSearch"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_search"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llSearchName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:visibility="gone"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_blue_stroke">
-            <ImageView
-                android:id="@+id/buttonCloseSearch"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="10dp"
-                android:src="@drawable/ic_arrow_left"/>
-
-            <AutoCompleteTextView
-                android:id="@+id/etSearch"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/clCarousel"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/transparent"
-                android:hint="@string/search"/>
-        </LinearLayout>
+                android:layout_height="wrap_content">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"/>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    app:tabBackground="@drawable/indicator_selector"/>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvGenre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:listitem="@layout/rv_item_genre"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMovie"
+                    app:spanCount="2"
+                    android:layout_gravity="center_horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/rv_item_movie"
+                    android:layout_marginTop="20dp"/>
+
+                <TextView
+                    android:id="@+id/tvLoadMore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:background="@drawable/bg_bottom_rounded"
+                    android:text="Load More"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp"
-        android:orientation="vertical">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvGenre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:listitem="@layout/rv_item_genre"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:gravity="end">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMovie"
-            app:spanCount="2"
-            android:layout_gravity="center_horizontal"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/rv_item_movie"
-            android:layout_marginTop="20dp"/>
+        <ImageView
+            android:id="@+id/buttonFavorite"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_favorite"/>
+
+        <ImageView
+            android:id="@+id/buttonSearch"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_search"/>
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/llSearchName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_blue_stroke">
+        <ImageView
+            android:id="@+id/buttonCloseSearch"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_left"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:hint="@string/search"/>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
