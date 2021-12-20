@@ -20,10 +20,10 @@ class MovieRepository @Inject constructor(
     private val genreDao: GenreDao,
     private val movieDao: MovieDao
 ) {
-    fun insertAllGenre(genres: List<Genre>) = genreDao.insertAll(genres)
+    private fun insertAllGenre(genres: List<Genre>) = genreDao.insertAll(genres)
     fun getAllGenres() = genreDao.getAllGenre()
 
-    fun insertAllMovie(movies: MutableList<Movie>) = movieDao.insertAll(movies)
+    private fun insertAllMovie(movies: MutableList<Movie>) = movieDao.insertAll(movies)
     fun getAllMovie() = movieDao.getAllMovie()
 
     suspend fun getGenres(): Resource<GenresResponse> {

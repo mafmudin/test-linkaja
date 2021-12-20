@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/parentHomeScreen"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -67,7 +68,7 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:background="@drawable/bg_bottom_rounded"
-                    android:text="Load More"/>
+                    android:text="@string/load_more"/>
             </LinearLayout>
 
         </LinearLayout>

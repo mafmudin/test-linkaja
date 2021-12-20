@@ -101,7 +101,7 @@ class MovieDetailActivity : BaseActivity() {
             .load(BuildConfig.IMAGE_BASE_URL.plus(movieDetailResponse.backdropPath))
             .into(ivDetailImage)
 
-        tvTitle.text = movieDetailResponse.title
+        tvDetailTitle.text = movieDetailResponse.title
         tvRuntime.text = String.format("%s Minutes",movieDetailResponse.runtime)
         tvReleaseDate.text = movieDetailResponse.releaseDate
         tvRating.text = movieDetailResponse.voteAverage.toString()

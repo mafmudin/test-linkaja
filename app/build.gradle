@@ -58,6 +58,7 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
 
     //Dagger - Hilt
     implementation "com.google.dagger:hilt-android:2.31-alpha"
@@ -106,4 +107,16 @@ dependencies {
     kapt "androidx.room:room-compiler:2.2.5"
     implementation("androidx.room:room-ktx:2.2.5")
     androidTestImplementation "androidx.room:room-testing:2.2.5"
+
+    testImplementation "androidx.arch.core:core-testing:2.0.0"
+
+    // For Robolectric tests.
+    testImplementation("com.google.dagger:hilt-android-testing:2.38.1")
+    // ...with Kotlin.
+    kaptTest("com.google.dagger:hilt-android-compiler:2.38.1")
+
+    // For instrumented tests.
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.38.1")
+    // ...with Kotlin.
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.38.1")
 }

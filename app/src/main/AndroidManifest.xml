@@ -18,7 +18,8 @@
             android:theme="@style/FullScreen">
         </activity>
 
-        <activity android:name=".favourite.FavouriteActivity"/>
+        <activity android:name=".favourite.FavouriteActivity"
+            android:exported="true"/>
 
         <activity
             android:name=".detailmovie.MovieDetailActivity"
