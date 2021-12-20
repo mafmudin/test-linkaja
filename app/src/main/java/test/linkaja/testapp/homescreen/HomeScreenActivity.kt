@@ -10,7 +10,6 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_home_screen.*
@@ -25,13 +24,13 @@ import test.linkaja.testapp.homescreen.adapter.MovieAdapter
 import test.linkaja.testapp.homescreen.adapter.ViewPagerAdapter
 import test.linkaja.testapp.homescreen.model.genres.Genre
 import test.linkaja.testapp.homescreen.model.movie.Movie
-import test.linkaja.testapp.homescreen.viewmodel.GenresViewModel
+import test.linkaja.testapp.homescreen.viewmodel.MovieViewModel
 import udinsi.dev.progress_svg.ProgressSvg
 import java.util.*
 
 @AndroidEntryPoint
 class HomeScreenActivity : BaseActivity() {
-    private val genreViewModel : GenresViewModel by viewModels()
+    private val movieViewModel : MovieViewModel by viewModels()
     lateinit var progressSvg: ProgressSvg
     lateinit var movieAdapter: MovieAdapter
     lateinit var genreAdapter: GenreAdapter
@@ -53,7 +52,7 @@ class HomeScreenActivity : BaseActivity() {
             override fun onClick(genre: Genre, pos: Int) {
                 page = 1
                 isAdd = false
-                genreViewModel.getMovieByGenre(genre.id.toString(), page)
+                movieViewModel.getMovieByGenre(genre.id.toString(), page)
             }
         })
 
@@ -73,10 +72,11 @@ class HomeScreenActivity : BaseActivity() {
 
         tvLoadMore.setOnClickListener {
             isAdd = true
+            page++
             if (llSearchName.visibility == View.VISIBLE){
-                genreViewModel.searchMovie(currentQuery, page++)
+                movieViewModel.searchMovie(currentQuery, page)
             }else{
-                genreViewModel.getMovie(page++)
+                movieViewModel.getMovie(page)
             }
         }
 
@@ -112,7 +112,7 @@ class HomeScreenActivity : BaseActivity() {
             override fun run() {
                 handler.post(runnable)
             }
-        }, 500, 5000)
+        }, 500, 3000)
 
         buttonSearch.setOnClickListener {
             buttonFavorite.visibility = View.GONE
@@ -151,7 +151,7 @@ class HomeScreenActivity : BaseActivity() {
                 isAdd = false
                 page = 1
                 currentQuery = s.toString()
-                genreViewModel.searchMovie(s.toString(), page)
+                movieViewModel.searchMovie(s.toString(), page)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -159,43 +159,50 @@ class HomeScreenActivity : BaseActivity() {
             }
         })
 
-        genreViewModel.getGenres()
-        genreViewModel.getMovie(page)
-        genreViewModel.getHighestRateMovie()
+        movieViewModel.getHighestRateMovie()
+
+        movieViewModel.getLocalMovie()
+        movieViewModel.getLocalGenre()
 
         lifecycleScope.launchWhenCreated {
-            genreViewModel.conversion.collect {
+            movieViewModel.conversionPopularMovie.collect{
                 when(it){
-                    is GenresViewModel.GenreEvent.Success -> {
-                        progressSvg.dissmis()
-                        genreAdapter.updateList(it.genresResponse)
-                    }
-                    is GenresViewModel.GenreEvent.Error -> {
-                        progressSvg.dissmis()
-                    }
-                    is GenresViewModel.GenreEvent.Loading -> {
+                    is MovieViewModel.PopularMovieEvent.Loading ->{
                         progressSvg.show()
                     }
-                    else -> Unit
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenCreated {
-            genreViewModel.conversionPopularMovie.collect {
-                when(it){
-                    is GenresViewModel.PopularMovieEvent.Success -> {
+                    is MovieViewModel.PopularMovieEvent.Success -> {
                         progressSvg.dissmis()
-                        if (isAdd){
-                            movieAdapter.addList(it.movieItem)
+                        if (it.movieItem.isEmpty()){
+                            movieViewModel.getMovie(page)
                         }else{
-                            movieAdapter.updateList(it.movieItem)
+                            if (isAdd){
+                                movieAdapter.addList(it.movieItem)
+                            }else{
+                                movieAdapter.updateList(it.movieItem)
+                            }
+                            viewPagerAdapter.updateList(it.movieItem)
                         }
                     }
-                    is GenresViewModel.PopularMovieEvent.Error -> {
+                    else -> Unit
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenCreated {
+            movieViewModel.conversion.collect {
+                when(it){
+                    is MovieViewModel.GenreEvent.Success -> {
+                        progressSvg.dissmis()
+                        if (it.genresResponse.isEmpty()){
+                            movieViewModel.getGenres()
+                        }else{
+                            genreAdapter.updateList(it.genresResponse)
+                        }
+                    }
+                    is MovieViewModel.GenreEvent.Error -> {
                         progressSvg.dissmis()
                     }
-                    is GenresViewModel.PopularMovieEvent.Loading -> {
+                    is MovieViewModel.GenreEvent.Loading -> {
                         progressSvg.show()
                     }
                     else -> Unit
@@ -203,17 +210,40 @@ class HomeScreenActivity : BaseActivity() {
             }
         }
 
+//        lifecycleScope.launchWhenCreated {
+//            movieViewModel.conversionPopularMovie.collect {
+//                when(it){
+//                    is MovieViewModel.PopularMovieEvent.Success -> {
+//                        progressSvg.dissmis()
+//                        if (isAdd){
+//                            movieAdapter.addList(it.movieItem)
+//                        }else{
+//                            movieAdapter.updateList(it.movieItem)
+//                        }
+//                        viewPagerAdapter.updateList(it.movieItem)
+//                    }
+//                    is MovieViewModel.PopularMovieEvent.Error -> {
+//                        progressSvg.dissmis()
+//                    }
+//                    is MovieViewModel.PopularMovieEvent.Loading -> {
+//                        progressSvg.show()
+//                    }
+//                    else -> Unit
+//                }
+//            }
+//        }
+
         lifecycleScope.launchWhenCreated {
-            genreViewModel.conversionHighestMovie.collect {
+            movieViewModel.conversionHighestMovie.collect {
                 when(it){
-                    is GenresViewModel.HighestRateMovieEvent.Success -> {
+                    is MovieViewModel.HighestRateMovieEvent.Success -> {
                         progressSvg.dissmis()
                         viewPagerAdapter.updateList(it.movieItem)
                     }
-                    is GenresViewModel.HighestRateMovieEvent.Error -> {
+                    is MovieViewModel.HighestRateMovieEvent.Error -> {
                         progressSvg.dissmis()
                     }
-                    is GenresViewModel.HighestRateMovieEvent.Loading -> {
+                    is MovieViewModel.HighestRateMovieEvent.Loading -> {
                         progressSvg.show()
                     }
                     else -> Unit
@@ -222,17 +252,17 @@ class HomeScreenActivity : BaseActivity() {
         }
 
         lifecycleScope.launch {
-            genreViewModel.conversionMovie.collect{
+            movieViewModel.conversionMovie.collect{
                 when(it){
-                    is GenresViewModel.MovieEvent.Success -> {
+                    is MovieViewModel.MovieEvent.Success -> {
                         progressSvg.dissmis()
                         Log.e("RESULT", it.movieItem.toString())
                         movieAdapter.updateList(it.movieItem)
                     }
-                    is GenresViewModel.MovieEvent.Error -> {
+                    is MovieViewModel.MovieEvent.Error -> {
                         progressSvg.dissmis()
                     }
-                    is GenresViewModel.MovieEvent.Loading -> {
+                    is MovieViewModel.MovieEvent.Loading -> {
                         progressSvg.show()
                     }
 
@@ -242,9 +272,9 @@ class HomeScreenActivity : BaseActivity() {
         }
 
         lifecycleScope.launch {
-            genreViewModel.conversionSearch.collect{
+            movieViewModel.conversionSearch.collect{
                 when(it){
-                    is GenresViewModel.SearchEvent.Success -> {
+                    is MovieViewModel.SearchEvent.Success -> {
 //                        progressSvg.dissmis()
                         Log.e("RESULT SEARCH", it.movieItem.toString())
                         if (isAdd){
@@ -253,16 +283,30 @@ class HomeScreenActivity : BaseActivity() {
                             movieAdapter.updateList(it.movieItem)
                         }
                     }
-                    is GenresViewModel.SearchEvent.Error -> {
+                    is MovieViewModel.SearchEvent.Error -> {
 //                        progressSvg.dissmis()
                     }
-                    is GenresViewModel.SearchEvent.Loading -> {
+                    is MovieViewModel.SearchEvent.Loading -> {
 //                        progressSvg.show()
                     }
 
                     else -> Unit
                 }
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        etSearch.setText("")
+        val slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_right)
+        llSearchName.visibility = View.GONE
+
+        if (buttonFavorite.visibility == View.GONE){
+            buttonFavorite.startAnimation(slideRight)
+            buttonFavorite.visibility = View.VISIBLE
+            viewPager.visibility = View.VISIBLE
+        }else{
+            super.onBackPressed()
         }
     }
 }

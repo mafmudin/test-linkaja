@@ -12,9 +12,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import test.linkaja.testapp.BuildConfig
 import test.linkaja.testapp.api.ApiServices
+import test.linkaja.testapp.database.GenreDao
+import test.linkaja.testapp.database.MovieDao
 import test.linkaja.testapp.detailmovie.repository.DetailMovieRepository
 import test.linkaja.testapp.favourite.repository.FavoriteRepository
-import test.linkaja.testapp.homescreen.repository.GenreRepository
+import test.linkaja.testapp.homescreen.repository.MovieRepository
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -51,7 +53,8 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideGenresRepository(apiServices: ApiServices): GenreRepository = GenreRepository(apiServices)
+    fun provideGenresRepository(apiServices: ApiServices, genreDao: GenreDao, movieDao: MovieDao):
+            MovieRepository = MovieRepository(apiServices, genreDao, movieDao)
 
     @Singleton
     @Provides
